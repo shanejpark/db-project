@@ -3,31 +3,31 @@ import { NavLink } from "react-router-dom";
 import styles from "./components.module.css";
 
 function Navigation() {
+  function NavItem(props: { link: string; text: string }) {
+    return (
+      <Nav.Item className={styles.item}>
+        <NavLink
+          to={props.link}
+          className={(isActive) =>
+            styles.link + " " + (isActive ? styles.inactive : styles.inactive)
+          }
+          end
+        >
+          {props.text}
+        </NavLink>
+      </Nav.Item>
+    );
+  }
+
   return (
     <>
       <Navbar bg="dark" variant="dark">
         <Container fluid>
           <Nav justify className="me-auto">
-            <Nav.Item className={styles.item}>
-              <NavLink to="/patient" className={styles.class}>
-                Patient
-              </NavLink>
-            </Nav.Item>
-            <Nav.Item className={styles.item}>
-              <NavLink to="/drugs" className={styles.class}>
-                Drugs
-              </NavLink>
-            </Nav.Item>
-            <Nav.Item className={styles.item}>
-              <NavLink to="/condition" className={styles.class}>
-                Condition
-              </NavLink>
-            </Nav.Item>
-            <Nav.Item className={styles.item}>
-              <NavLink to="/manufacturor" className={styles.class}>
-                Manufacturor
-              </NavLink>
-            </Nav.Item>
+            <NavItem link="/patient" text="Patient" />
+            <NavItem link="/drugs" text="Drugs" />
+            <NavItem link="/condition" text="Condition" />
+            <NavItem link="/manufacturor" text="Manufacturor" />
           </Nav>
         </Container>
       </Navbar>

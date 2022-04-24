@@ -1,14 +1,13 @@
-.class {
+.link {
   margin: 0.5rem auto 0.5rem auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  color: gray;
   text-decoration: none;
 }
 
-.class:hover {
+.link:hover {
   color: white;
 }
 
@@ -17,6 +16,31 @@
   margin-right: 20px;
 }
 
-.activeLink {
+.active {
   color: white;
+}
+
+.inactive {
+  color: gray;
+}
+
+.card {
+  width: 15 rem;
+  padding: 5 rem;
+}
+
+.filter {
+  margin-top: 2rem;
+  margin-inline: auto;
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  margin-right: 0;
+  margin-left: 0;
+  padding-right: 5px;
+}
+
+.button {
+  float: right;
+  margin-bottom: 1rem;
 }
