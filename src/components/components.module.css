@@ -1,0 +1,22 @@
+.class {
+  margin: 0.5rem auto 0.5rem auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: gray;
+  text-decoration: none;
+}
+
+.class:hover {
+  color: white;
+}
+
+.item {
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.activeLink {
+  color: white;
+}
