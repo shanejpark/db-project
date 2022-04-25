@@ -6,7 +6,7 @@ var Count = function (count) {
 
 // get number side effects for a manufacturer
 Count.countSideEffectForManufacturer = (manufacturer_name, result) => {
-  dbConn.query(
+  return dbConn.query(
     "CALL count_side_effect_for_manufacturer(?)",
     [manufacturer_name],
     (err, res) => {
@@ -22,7 +22,7 @@ Count.countSideEffectForManufacturer = (manufacturer_name, result) => {
 
 // get count of patients
 Count.countOfPatientsForManufacturer = (manufacturer_name, result) => {
-  dbConn.query(
+  return dbConn.query(
     "CALL count_patients_for_manufacturer(?)",
     [manufacturer_name],
     (err, res) => {
@@ -35,3 +35,5 @@ Count.countOfPatientsForManufacturer = (manufacturer_name, result) => {
     }
   );
 };
+
+module.exports = Count;

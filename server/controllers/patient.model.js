@@ -14,7 +14,7 @@ var Patient = function (patient) {
 
 // get all patients
 Patient.getAllPatients = (result) => {
-  dbConn.query("SELECT * FROM patients", (err, res) => {
+  return dbConn.query("SELECT * FROM patients", (err, res) => {
     if (err) {
       console.log("Error while fetching patients", err);
       result(null, err);
@@ -26,27 +26,35 @@ Patient.getAllPatients = (result) => {
 
 // get employee by Name for Search Data by name
 Patient.getPatientByName = (name, result) => {
-  dbConn.query("SELECT * FROM patients WHERE name=?", name, (err, res) => {
-    if (err) {
-      console.log("Error while fetching employee by id", err);
-      result(null, err);
-    } else {
-      result(null, res);
+  return dbConn.query(
+    "SELECT * FROM patients WHERE name=?",
+    name,
+    (err, res) => {
+      if (err) {
+        console.log("Error while fetching employee by id", err);
+        result(null, err);
+      } else {
+        result(null, res);
+      }
     }
-  });
+  );
 };
 
 // create new patient
 Patient.createPatient = (patientReqData, result) => {
-  dbConn.query("INSERT INTO patients SET ?", patientReqData, (err, res) => {
-    if (err) {
-      console.log("Error while inserting data");
-      result(null, err);
-    } else {
-      console.log("Patient created successfully");
-      result(null, res);
+  return dbConn.query(
+    "INSERT INTO patients SET ?",
+    patientReqData,
+    (err, res) => {
+      if (err) {
+        console.log("Error while inserting data");
+        result(null, err);
+      } else {
+        console.log("Patient created successfully");
+        result(null, res);
+      }
     }
-  });
+  );
 };
 
 Patient.createSideEffectForPatient = (
@@ -55,7 +63,7 @@ Patient.createSideEffectForPatient = (
   side_effect_name,
   result
 ) => {
-  dbConn.query(
+  return dbConn.query(
     "CALL create_side_effect_for_patient(?,?,?)",
     [patient_name, drug_name, side_effect_name],
     (err, res) => {
@@ -71,7 +79,7 @@ Patient.createSideEffectForPatient = (
 
 // delete patient
 Patient.deletePatient = (id, result) => {
-  dbConn.query("CALL remove_patient(?)", [id], (err, res) => {
+  return dbConn.query("CALL remove_patient(?)", [id], (err, res) => {
     if (err) {
       console.log("Error while deleting the employee");
       result(null, err);

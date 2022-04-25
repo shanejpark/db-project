@@ -7,7 +7,7 @@ var Manufacturer = function (manufacturer) {
 
 // get treatments
 Manufacturer.getManufacturer = (drug_name, result) => {
-  dbConn.query("CALL get_manufacturer(?)", [drug_name], (err, res) => {
+  return dbConn.query("CALL get_manufacturer(?)", [drug_name], (err, res) => {
     if (err) {
       console.log("No treatments for condition");
       result(null, err);
@@ -16,3 +16,5 @@ Manufacturer.getManufacturer = (drug_name, result) => {
     }
   });
 };
+
+module.exports = Manufacturer;

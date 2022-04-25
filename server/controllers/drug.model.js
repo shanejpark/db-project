@@ -9,7 +9,7 @@ var Drug = function (drug) {
 
 // get all patients
 Drug.getAllPatients = (result) => {
-  dbConn.query("SELECT * FROM drugs", (err, res) => {
+  return dbConn.query("SELECT * FROM drugs", (err, res) => {
     if (err) {
       console.log("Error while fetching drugs", err);
       result(null, err);
@@ -22,7 +22,7 @@ Drug.getAllPatients = (result) => {
 
 // get employee by Name for Search Data by name
 Drug.getDrugByName = (medical_name, result) => {
-  dbConn.query(
+  return dbConn.query(
     "SELECT * FROM drugs WHERE medical_name=?",
     [medical_name],
     (err, res) => {
@@ -38,7 +38,7 @@ Drug.getDrugByName = (medical_name, result) => {
 
 // create new drug
 Drug.createDrug = (drugReqData, result) => {
-  dbConn.query("INSERT INTO drugs SET ?", drugReqData, (err, res) => {
+  return dbConn.query("INSERT INTO drugs SET ?", drugReqData, (err, res) => {
     if (err) {
       console.log("Error while inserting data");
       result(null, err);
@@ -51,7 +51,7 @@ Drug.createDrug = (drugReqData, result) => {
 
 // get treatments
 Drug.getTreatments = (condition_name, result) => {
-  dbConn.query("CALL get_treaments(?)", [condition_name], (err, res) => {
+  return dbConn.query("CALL get_treaments(?)", [condition_name], (err, res) => {
     if (err) {
       console.log("No treatments for condition");
       result(null, err);

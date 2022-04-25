@@ -28,6 +28,18 @@ function Patient() {
   const [weight, setWeight] = useState("");
   const [height, setHeight] = useState("");
 
+  function clearState() {
+    setName("");
+    setAge("");
+    setEthnicity("");
+    setCountry("");
+    setState("");
+    setCity("");
+    setSex("");
+    setWeight("");
+    setHeight("");
+  }
+
   async function loadPatients() {
     return fetch("http://localhost:5000/api/v1/patient/")
       .then(function (response) {
@@ -67,6 +79,7 @@ function Patient() {
       height: height,
     });
     alert("Data inserted");
+    clearState();
     return loadPatients();
   }
 
