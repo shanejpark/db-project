@@ -15,18 +15,31 @@ function Patient() {
   const [patientName, setPatientName] = useState("");
   const [drugName, setDrugName] = useState("");
   const [sideEffects, setSideEffects] = useState([]);
+  const [patients, setPatients] = useState([]);
 
-  async function loadSideEffects() {
-    return fetch("http://localhost:5000/api/v1/patient")
+  async function loadPatients() {
+    return fetch("http://localhost:5000/api/v1/patient/")
       .then(function (response) {
         return response.json();
       })
       .then(function (myJson) {
-        setSideEffects(myJson);
+        setPatients(myJson);
       });
   }
+  useEffect(() => {
+    loadPatients();
+  });
 
   async function searchPatientDrug() {
+    return fetch(
+      `http://localhost:5000/api/v1/patient/searchRecord/${patientName}/${drugName}`
+    )
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (myJson) {
+        setPatients(myJson);
+      });
     axios
       .get(
         `http://localhost:5000/api/v1/patient/searchRecord/${patientName}/${drugName}`
@@ -48,7 +61,7 @@ function Patient() {
           <tbody>
             {sideEffects.map((sideEffect) => (
               <tr>
-                <td>sideEffect.name</td>
+                <td>{sideEffect["name"]}</td>
               </tr>
             ))}
           </tbody>
@@ -57,40 +70,40 @@ function Patient() {
     );
   }
 
-  function Filter() {
+  function listAllPatients() {
     return (
-      <Card className={styles.card}>
-        <Form>
-          <Form.Group className="mb-3" controlId="form">
-            <Form.Label column="lg">Patient Name</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Patient"
-              value={patientName}
-              onChange={(e) => setPatientName(e.target.value)}
-            />
-          </Form.Group>
-
-          <Form.Group className="mb-3" controlId="form">
-            <Form.Label column="lg">Drug</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Drug"
-              value={drugName}
-              onChange={(e) => setDrugName(e.target.value)}
-            />
-          </Form.Group>
-          <Button
-            variant="danger"
-            type="button"
-            size="sm"
-            className={styles.button}
-            onClick={searchPatientDrug}
-          >
-            Submit
-          </Button>
-        </Form>
-      </Card>
+      <div>
+        <Table striped bordered hover>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Age</th>
+              <th>Name</th>
+              <th>Name</th>
+              <th>Name</th>
+              <th>Name</th>
+              <th>Name</th>
+              <th>Name</th>
+              <th>Name</th>
+            </tr>
+          </thead>
+          <tbody>
+            {patients.map((patient) => (
+              <tr>
+                <td>{patient["name"]}</td>
+                <td>{patient["age"]}</td>
+                <td>{patient["ethnicity"]}</td>
+                <td>{patient["country"]}</td>
+                <td>{patient["state"]}</td>
+                <td>{patient["city"]}</td>
+                <td>{patient["sex"]}</td>
+                <td>{patient["weight"]}</td>
+                <td>{patient["height"]}</td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      </div>
     );
   }
 
@@ -99,8 +112,40 @@ function Patient() {
       <div className={styles.filter}>
         <Container>
           <Row className="mx-3">
-            <Filter />
-            {sideEffects.length > 0 && table()}
+            <Card className={styles.card}>
+              <Form>
+                <Form.Group className="mb-3" controlId="form">
+                  <Form.Label column="lg">Patient Name</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Patient"
+                    value={patientName}
+                    onChange={(e) => setPatientName(e.target.value)}
+                  />
+                </Form.Group>
+
+                <Form.Group className="mb-3" controlId="form">
+                  <Form.Label column="lg">Drug</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Drug"
+                    value={drugName}
+                    onChange={(e) => setDrugName(e.target.value)}
+                  />
+                </Form.Group>
+                <Button
+                  variant="danger"
+                  type="button"
+                  size="sm"
+                  className={styles.button}
+                  onClick={searchPatientDrug}
+                >
+                  Submit
+                </Button>
+              </Form>
+            </Card>
+            {table()}
+            {listAllPatients()}
           </Row>
         </Container>
       </div>

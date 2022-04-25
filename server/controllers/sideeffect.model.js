@@ -2,12 +2,11 @@ var dbConn = require("../db.config");
 
 var SideEffect = function (sideeffect) {
   this.name = sideeffect.name;
-  this.age = sideeffect.age;
 };
 
 // get side effects
 SideEffect.getSideEffects = (patient_name, drug_name, result) => {
-  dbConn.query(
+  return dbConn.query(
     "CALL patient_side_effects(?,?)",
     [patient_name, drug_name],
     (err, res) => {
@@ -15,8 +14,11 @@ SideEffect.getSideEffects = (patient_name, drug_name, result) => {
         console.log("No side effects for patient or drug");
         result(null, err);
       } else {
+        console.log("Hello");
         result(null, res);
       }
     }
   );
 };
+
+module.exports = SideEffect;

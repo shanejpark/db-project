@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const patientRoutes = require("./routes/patient.route");
 
 const app = express();
 
@@ -10,7 +11,7 @@ app.use(cors());
 // create express app
 
 // setup the server port
-const port = process.env.PORT || 5000;
+const port = 5000;
 
 // parse request data content type application/x-www-form-rulencoded
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -22,8 +23,6 @@ app.use(bodyParser.json());
 app.get("/", (req, res) => {
   res.send("Hello World");
 });
-
-const patientRoutes = require("./routes/patient.route");
 
 // create patient routes
 app.use("/api/v1/patient", patientRoutes);

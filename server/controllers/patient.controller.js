@@ -8,9 +8,8 @@ const ManufacturerModel = require("./manufacturer.model");
 exports.getPatientList = (req, res) => {
   //console.log('here all employees list');
   PatientModel.getAllPatients((err, patients) => {
-    console.log("We are here");
     if (err) res.send(err);
-    console.log("Patients", patients);
+
     res.send(patients);
   });
 };

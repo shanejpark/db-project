@@ -19,7 +19,6 @@ Patient.getAllPatients = (result) => {
       console.log("Error while fetching patients", err);
       result(null, err);
     } else {
-      console.log("Patients fetched successfully");
       result(null, res);
     }
   });
