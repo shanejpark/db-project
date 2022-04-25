@@ -1,8 +1,8 @@
-const PatientModel = require("../models/patient.model");
-const DrugModel = require("../models/drug.model");
-const SideEffectModel = reqiure("../models/sideeffect.model");
-const CountModel = reqiure("../models/count.model");
-const ManufacturerModel = require("../models/manufacturer.model");
+const PatientModel = require("./patient.model");
+const DrugModel = require("./drug.model");
+const SideEffectModel = require("./sideeffect.model");
+const CountModel = require("./count.model");
+const ManufacturerModel = require("./manufacturer.model");
 
 // get all patient list
 exports.getPatientList = (req, res) => {

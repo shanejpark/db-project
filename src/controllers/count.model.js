@@ -1,4 +1,4 @@
-var dbConn = require("../../config/db.config");
+var dbConn = require("../db.config");
 
 var Count = function (count) {
   this.size = count.size;

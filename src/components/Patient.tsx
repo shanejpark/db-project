@@ -17,7 +17,7 @@ function Patient() {
   const [sideEffects, setSideEffects] = useState([]);
 
   async function loadSideEffects() {
-    return fetch("http://localhost:3000/api/v1/patient")
+    return fetch("http://localhost:5000/api/v1/patient")
       .then(function (response) {
         return response.json();
       })
@@ -29,7 +29,7 @@ function Patient() {
   async function searchPatientDrug() {
     axios
       .get(
-        `http://localhost:3000/api/v1/patient/searchRecord/${patientName}/${drugName}`
+        `http://localhost:5000/api/v1/patient/searchRecord/${patientName}/${drugName}`
       )
       .then((response) => {
         setSideEffects(response.data);

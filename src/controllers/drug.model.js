@@ -1,4 +1,4 @@
-var dbConn = require("../../config/db.config");
+var dbConn = require("../db.config");
 
 var Drug = function (drug) {
   this.common_name = drug.common_name;
