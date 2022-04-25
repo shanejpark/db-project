@@ -4,26 +4,20 @@ const router = express.Router();
 const patientController = require("../controllers/patient.controller");
 
 // get all patients
-router.get("/", patientController.getPatientList);
+router.get("/patient", patientController.getPatientList);
 
 // get patient by name
-router.get("/searchRecord/:first_name", patientController.getPatientByName);
-
-// create new patient
-router.post("/", patientController.createNewPatient);
-
-// delete patient
-router.delete("/:id", patientController.deletePatient);
+router.get("/patient/:first_name", patientController.getPatientByName);
 
 // get side effects from a drug the patient has used
 router.get(
-  "/searchRecord/:patient_name/:drug_name",
+  "/side_effect/:patient_name/:drug_name",
   patientController.getSideEffects
 );
 
 // number of patients a manufacturer is supplying drugs for
 router.get(
-  "/searchRecord/:manufacturer_name",
+  "/manufacturer/:manufacturer_name",
   patientController.countPatientsForManufacturer
 );
 
@@ -31,21 +25,30 @@ router.get(
 router.get("/drugs", patientController.getDrugList);
 
 // get drug by name
-router.get("/searchRecord/:first_name", patientController.getDrugByName);
+router.get("/drugs/:first_name", patientController.getDrugByName);
+
+// get drugs for a treatment
+router.get("/condition/:condition_name", patientController.getTreatments);
+
+// get side effects from a drug the patient has used
+router.get(
+  "/manufacturer/:manufacturer_name",
+  patientController.countSideEffectForManufacturer
+);
+
+// get the manufacturers for a drug
+router.get("/drugs/manufacturer/:drug_name", patientController.getManufacturer);
+
+// create new side effect
+router.get("/side_effect/create", patientController.createSideEffectForPatient);
+
+// create new patient
+router.post("/patient", patientController.createNewPatient);
 
 // create new drug
 router.post("/drugs", patientController.createNewDrug);
 
-// get side effects from a drug the patient has used
-router.get("/searchRecord/:condition_name", patientController.getTreatments);
-
-// get side effects from a drug the patient has used
-router.get("/searchRecord/:manufacturer_name", patientController.getTreatments);
-
-// get the manufacturers for a drug
-router.get("/searchRecord/:drug_name", patientController.getManufacturer);
-
-// create new side effect
-router.get("/side_effect/create", patientController.createSideEffectForPatient);
+// delete patient
+router.delete("/patient/delete/:id", patientController.deletePatient);
 
 module.exports = router;

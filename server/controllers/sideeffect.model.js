@@ -14,7 +14,6 @@ SideEffect.getSideEffects = (patient_name, drug_name, result) => {
         console.log("No side effects for patient or drug");
         result(null, err);
       } else {
-        console.log("Hello");
         result(null, res);
       }
     }

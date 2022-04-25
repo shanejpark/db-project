@@ -25,7 +25,7 @@ app.get("/", (req, res) => {
 });
 
 // create patient routes
-app.use("/api/v1/patient", patientRoutes);
+app.use("/api/v1", patientRoutes);
 
 // listen to the port
 app.listen(port, () => {

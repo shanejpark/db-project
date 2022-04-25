@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "./index.css";
 import Navigation from "./components/Navigation";
 import Patient from "./components/Patient";
+import Drug from "./components/Drug";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -13,7 +14,7 @@ root.render(
     <Navigation />
     <Routes>
       <Route path="/patient" element={<Patient />} />
-      <Route path="/drugs" element={<Patient />} />
+      <Route path="/drugs" element={<Drug />} />
     </Routes>
   </Router>
 );

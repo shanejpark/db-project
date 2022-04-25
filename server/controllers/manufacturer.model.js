@@ -7,14 +7,18 @@ var Manufacturer = function (manufacturer) {
 
 // get treatments
 Manufacturer.getManufacturer = (drug_name, result) => {
-  return dbConn.query("CALL get_manufacturer(?)", [drug_name], (err, res) => {
-    if (err) {
-      console.log("No treatments for condition");
-      result(null, err);
-    } else {
-      result(null, res);
+  return dbConn.query(
+    "select name, price from manufacturers join manufacturers_make_drugs using(manufacturer_id) join drugs using(drug_id) where drugs.medical_name like ?;",
+    [drug_name],
+    (err, res) => {
+      if (err) {
+        console.log("No treatments for condition");
+        result(null, err);
+      } else {
+        result(null, res);
+      }
     }
-  });
+  );
 };
 
 module.exports = Manufacturer;

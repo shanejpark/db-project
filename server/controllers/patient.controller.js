@@ -8,7 +8,7 @@ const ManufacturerModel = require("./manufacturer.model");
 exports.getPatientList = (req, res) => {
   //console.log('here all employees list');
   PatientModel.getAllPatients((err, patients) => {
-    if (err) res.send(err);
+    if (err) return res.send(err);
 
     res.send(patients);
   });
@@ -18,7 +18,7 @@ exports.getPatientList = (req, res) => {
 exports.getPatientByName = (req, res) => {
   //console.log('get emp by id');
   PatientModel.getPatientByName(req.params.first_name, (err, patients) => {
-    if (err) res.send(err);
+    if (err) return res.send(err);
     console.log("single patient data", patients);
     res.send(patients);
   });
@@ -33,7 +33,7 @@ exports.createNewPatient = (req, res) => {
     res.send(400).send({ success: false, message: "Please fill all fields" });
   } else {
     PatientModel.createPatient(patientReqData, (err, patient) => {
-      if (err) res.send(err);
+      if (err) return res.send(err);
       res.json({
         status: true,
         message: "Patient Created Successfully",
@@ -46,7 +46,7 @@ exports.createNewPatient = (req, res) => {
 // delete patient
 exports.deletePatient = (req, res) => {
   PatientModel.deletePatient(req.params.id, (err, patient) => {
-    if (err) res.send(err);
+    if (err) return res.send(err);
     res.json({ success: true, message: "Patient deleted successully!" });
   });
 };
@@ -58,9 +58,8 @@ exports.createSideEffectForPatient = (req, res) => {
     req.params.drug_name,
     req.params.sideeffect_name,
     (err, patient) => {
-      if (err) res.send(err);
+      if (err) return res.send(err);
       res.json({ success: true, message: "Side effect created successully!" });
-      res.send(patient);
     }
   );
 };
@@ -71,8 +70,8 @@ exports.getSideEffects = (req, res) => {
     req.params.patient_name,
     req.params.drug_name,
     (err, patient) => {
-      if (err) res.send(err);
-      res.json({ success: true, message: "Side effects found successully!" });
+      if (err) return res.send(err);
+      console.log("patient and drug", patient);
       res.send(patient);
     }
   );
@@ -83,7 +82,7 @@ exports.getDrugList = (req, res) => {
   //console.log('here all employees list');
   DrugModel.getAllPatients((err, patients) => {
     console.log("We are here");
-    if (err) res.send(err);
+    if (err) return res.send(err);
     console.log("Patients", patients);
     res.send(patients);
   });
@@ -93,7 +92,7 @@ exports.getDrugList = (req, res) => {
 exports.getDrugByName = (req, res) => {
   //console.log('get emp by id');
   DrugModel.getDrugByName(req.params.name, (err, drug) => {
-    if (err) res.send(err);
+    if (err) return res.send(err);
     console.log("single drug data", drug);
     res.send(drug);
   });
@@ -105,10 +104,12 @@ exports.createNewDrug = (req, res) => {
   console.log("drugReqData", drugReqData);
   // check null
   if (req.body.constructor === Object && Object.keys(req.body).length === 0) {
-    res.send(400).send({ success: false, message: "Please fill all fields" });
+    res
+      .setStatus(400)
+      .send({ success: false, message: "Please fill all fields" });
   } else {
     DrugModel.createDrug(drugReqData, (err, drug) => {
-      if (err) res.send(err);
+      if (err) return res.send(err);
       res.json({
         status: true,
         message: "Drug Created Successfully",
@@ -121,7 +122,7 @@ exports.createNewDrug = (req, res) => {
 // get table of drugs that treat given condition
 exports.getTreatments = (req, res) => {
   DrugModel.getTreatments(req.params.condition_name, (err, drug) => {
-    if (err) res.send(err);
+    if (err) return res.send(err);
     res.send(drug);
   });
 };
@@ -131,7 +132,7 @@ exports.countSideEffectForManufacturer = (req, res) => {
   CountModel.countSideEffectForManufacturer(
     req.params.manufacturer_name,
     (err, count) => {
-      if (err) res.send(err);
+      if (err) return res.send(err);
       res.send(count);
     }
   );
@@ -142,8 +143,7 @@ exports.countPatientsForManufacturer = (req, res) => {
   CountModel.patientsForManufacturer(
     req.params.manufacturer_name,
     (err, count) => {
-      if (err) res.send(err);
-      res.json({ success: true, message: "Patients counted successully!" });
+      if (err) return res.send(err);
       res.send(count);
     }
   );
@@ -151,11 +151,11 @@ exports.countPatientsForManufacturer = (req, res) => {
 
 // get count of patients
 exports.getManufacturer = (req, res) => {
-  ManufacturerModel.getManufacturer(
+  return ManufacturerModel.getManufacturer(
     req.params.drug_name,
     (err, manufacturer) => {
-      if (err) res.send(err);
-      res.json({ success: true, message: "Patients counted successully!" });
+      if (err) return res.send(err);
+      console.log("manufacturer", manufacturer);
       res.send(manufacturer);
     }
   );

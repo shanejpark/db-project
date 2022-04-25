@@ -41,7 +41,7 @@ function Patient() {
   }
 
   async function loadPatients() {
-    return fetch("http://localhost:5000/api/v1/patient/")
+    return fetch("http://localhost:5000/api/v1/patient")
       .then(function (response) {
         return response.json();
       })
@@ -54,10 +54,10 @@ function Patient() {
     loadPatients();
   }, []);
 
-  function searchPatientDrug() {
+  async function searchPatientDrug() {
     return axios
       .get(
-        `http://localhost:5000/api/v1/patient/searchRecord/${patientName}/${drugName}`
+        `http://localhost:5000/api/v1/side_effect/${patientName}/${drugName}`
       )
       .then((response) => {
         setSideEffects(response.data);
@@ -67,7 +67,7 @@ function Patient() {
   async function submitNewPatient(e: any) {
     e.preventDefault();
     e.target.reset();
-    await axios.post("http://localhost:5000/api/v1/patient/", {
+    await axios.post("http://localhost:5000/api/v1/patient", {
       name: name,
       age: age,
       ethnicity: ethnicity,
@@ -83,7 +83,7 @@ function Patient() {
     return loadPatients();
   }
 
-  function table() {
+  function sideEffectsTable() {
     return (
       <div>
         <Table striped bordered hover variant="dark">
@@ -185,7 +185,7 @@ function Patient() {
                 </Card.Body>
               </Card>
             </Col>
-            <Col>{table()}</Col>
+            <Col>{sideEffectsTable()}</Col>
           </Row>
           <Row className="m-5">
             <div>
@@ -281,6 +281,15 @@ function Patient() {
                     onChange={(e) => setHeight(e.target.value)}
                   />
                 </Form.Group>
+
+                <Button
+                  variant="dark"
+                  type="button"
+                  size="sm"
+                  onClick={clearState}
+                >
+                  Clear
+                </Button>
 
                 <Button
                   variant="dark"
