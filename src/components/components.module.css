@@ -26,7 +26,6 @@
 
 .card {
   width: 15 rem;
-  padding: 5 rem;
 }
 
 .filter {
@@ -43,4 +42,15 @@
 .button {
   float: right;
   margin-bottom: 1rem;
+}
+
+.listPatients {
+  margin-top: 2rem;
+  margin-bottom: 3rem;
+}
+
+.containerBlock {
+  max-width: 720px;
+  align-items: center;
+  justify-content: center;
 }

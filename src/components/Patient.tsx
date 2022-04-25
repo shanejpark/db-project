@@ -14,8 +14,19 @@ import axios from "axios";
 function Patient() {
   const [patientName, setPatientName] = useState("");
   const [drugName, setDrugName] = useState("");
+
   const [sideEffects, setSideEffects] = useState([]);
   const [patients, setPatients] = useState([]);
+
+  const [name, setName] = useState("");
+  const [age, setAge] = useState("");
+  const [ethnicity, setEthnicity] = useState("");
+  const [country, setCountry] = useState("");
+  const [state, setState] = useState("");
+  const [city, setCity] = useState("");
+  const [sex, setSex] = useState("");
+  const [weight, setWeight] = useState("");
+  const [height, setHeight] = useState("");
 
   async function loadPatients() {
     return fetch("http://localhost:5000/api/v1/patient/")
@@ -26,21 +37,13 @@ function Patient() {
         setPatients(myJson);
       });
   }
+
   useEffect(() => {
     loadPatients();
-  });
+  }, []);
 
-  async function searchPatientDrug() {
-    return fetch(
-      `http://localhost:5000/api/v1/patient/searchRecord/${patientName}/${drugName}`
-    )
-      .then(function (response) {
-        return response.json();
-      })
-      .then(function (myJson) {
-        setPatients(myJson);
-      });
-    axios
+  function searchPatientDrug() {
+    return axios
       .get(
         `http://localhost:5000/api/v1/patient/searchRecord/${patientName}/${drugName}`
       )
@@ -49,10 +52,28 @@ function Patient() {
       });
   }
 
+  async function submitNewPatient(e: any) {
+    e.preventDefault();
+    e.target.reset();
+    await axios.post("http://localhost:5000/api/v1/patient/", {
+      name: name,
+      age: age,
+      ethnicity: ethnicity,
+      country: country,
+      state: state,
+      city: city,
+      sex: sex,
+      weight: weight,
+      height: height,
+    });
+    alert("Data inserted");
+    return loadPatients();
+  }
+
   function table() {
     return (
       <div>
-        <Table striped bordered hover>
+        <Table striped bordered hover variant="dark">
           <thead>
             <tr>
               <th>Side Effects</th>
@@ -73,18 +94,19 @@ function Patient() {
   function listAllPatients() {
     return (
       <div>
-        <Table striped bordered hover>
+        <h1>List of Patients</h1>
+        <Table striped bordered hover variant="dark">
           <thead>
             <tr>
               <th>Name</th>
               <th>Age</th>
-              <th>Name</th>
-              <th>Name</th>
-              <th>Name</th>
-              <th>Name</th>
-              <th>Name</th>
-              <th>Name</th>
-              <th>Name</th>
+              <th>Ethnicity</th>
+              <th>Country</th>
+              <th>State</th>
+              <th>City</th>
+              <th>Sex</th>
+              <th>Weight (lbs)</th>
+              <th>Height (in)</th>
             </tr>
           </thead>
           <tbody>
@@ -96,7 +118,7 @@ function Patient() {
                 <td>{patient["country"]}</td>
                 <td>{patient["state"]}</td>
                 <td>{patient["city"]}</td>
-                <td>{patient["sex"]}</td>
+                <td>{patient["sex"] === "0" ? "male" : "female"}</td>
                 <td>{patient["weight"]}</td>
                 <td>{patient["height"]}</td>
               </tr>
@@ -110,42 +132,153 @@ function Patient() {
   return (
     <>
       <div className={styles.filter}>
-        <Container>
-          <Row className="mx-3">
-            <Card className={styles.card}>
-              <Form>
+        <Container className={styles.containerBlock}>
+          <Row className="m-5">{listAllPatients()}</Row>
+          <Row className="m-5">
+            <Col>
+              <Card className={styles.card}>
+                <Card.Body>
+                  <Card.Title>Get side effects</Card.Title>
+                  <Form>
+                    <Form.Group className="mb-3" controlId="form">
+                      <Form.Label column="sm">Patient Name</Form.Label>
+                      <Form.Control
+                        type="text"
+                        placeholder="Patient"
+                        value={patientName}
+                        onChange={(e) => setPatientName(e.target.value)}
+                      />
+                    </Form.Group>
+
+                    <Form.Group className="mb-3" controlId="form">
+                      <Form.Label column="sm">Drug</Form.Label>
+                      <Form.Control
+                        type="text"
+                        placeholder="Drug"
+                        value={drugName}
+                        onChange={(e) => setDrugName(e.target.value)}
+                      />
+                    </Form.Group>
+                    <Button
+                      variant="dark"
+                      type="button"
+                      size="sm"
+                      className={styles.button}
+                      onClick={searchPatientDrug}
+                    >
+                      Search
+                    </Button>
+                  </Form>
+                </Card.Body>
+              </Card>
+            </Col>
+            <Col>{table()}</Col>
+          </Row>
+          <Row className="m-5">
+            <div>
+              <h2>Add new patient</h2>
+              <Form onSubmit={submitNewPatient} className="mt-3">
                 <Form.Group className="mb-3" controlId="form">
-                  <Form.Label column="lg">Patient Name</Form.Label>
+                  <Form.Label column="sm">Patient Name</Form.Label>
                   <Form.Control
                     type="text"
-                    placeholder="Patient"
-                    value={patientName}
-                    onChange={(e) => setPatientName(e.target.value)}
+                    placeholder="Name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
                   />
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="form">
-                  <Form.Label column="lg">Drug</Form.Label>
+                  <Form.Label column="sm">Patient Name</Form.Label>
                   <Form.Control
                     type="text"
-                    placeholder="Drug"
-                    value={drugName}
-                    onChange={(e) => setDrugName(e.target.value)}
+                    placeholder="Age"
+                    value={age}
+                    onChange={(e) => setAge(e.target.value)}
                   />
                 </Form.Group>
+
+                <Form.Group className="mb-3" controlId="form">
+                  <Form.Label column="sm">Ethnicity</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Ethnicity"
+                    value={ethnicity}
+                    onChange={(e) => setEthnicity(e.target.value)}
+                    required
+                  />
+                </Form.Group>
+
+                <Form.Group className="mb-3" controlId="form">
+                  <Form.Label column="sm">Country</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Country"
+                    value={country}
+                    onChange={(e) => setCountry(e.target.value)}
+                  />
+                </Form.Group>
+
+                <Form.Group className="mb-3" controlId="form">
+                  <Form.Label column="sm">State</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="State"
+                    value={state}
+                    onChange={(e) => setState(e.target.value)}
+                  />
+                </Form.Group>
+
+                <Form.Group className="mb-3" controlId="form">
+                  <Form.Label column="sm">City</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="City"
+                    value={city}
+                    onChange={(e) => setCity(e.target.value)}
+                  />
+                </Form.Group>
+
+                <Form.Group className="mb-3" controlId="form">
+                  <Form.Label column="sm">Sex</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Sex"
+                    value={sex}
+                    onChange={(e) => setSex(e.target.value)}
+                  />
+                </Form.Group>
+
+                <Form.Group className="mb-3" controlId="form">
+                  <Form.Label column="sm">Weight (lbs)</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Weight (lbs)"
+                    value={weight}
+                    onChange={(e) => setWeight(e.target.value)}
+                  />
+                </Form.Group>
+
+                <Form.Group className="mb-3" controlId="form">
+                  <Form.Label column="sm">Height (in)</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Height (in)"
+                    value={height}
+                    onChange={(e) => setHeight(e.target.value)}
+                  />
+                </Form.Group>
+
                 <Button
-                  variant="danger"
-                  type="button"
+                  variant="dark"
+                  type="submit"
                   size="sm"
                   className={styles.button}
-                  onClick={searchPatientDrug}
                 >
                   Submit
                 </Button>
               </Form>
-            </Card>
-            {table()}
-            {listAllPatients()}
+            </div>
           </Row>
         </Container>
       </div>

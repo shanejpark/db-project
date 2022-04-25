@@ -10,7 +10,7 @@ router.get("/", patientController.getPatientList);
 router.get("/searchRecord/:first_name", patientController.getPatientByName);
 
 // create new patient
-router.post("/patient/create", patientController.createNewPatient);
+router.post("/", patientController.createNewPatient);
 
 // delete patient
 router.delete("/:id", patientController.deletePatient);
@@ -34,7 +34,7 @@ router.get("/drugs", patientController.getDrugList);
 router.get("/searchRecord/:first_name", patientController.getDrugByName);
 
 // create new drug
-router.post("/drugs/create", patientController.createNewDrug);
+router.post("/drugs", patientController.createNewDrug);
 
 // get side effects from a drug the patient has used
 router.get("/searchRecord/:condition_name", patientController.getTreatments);
