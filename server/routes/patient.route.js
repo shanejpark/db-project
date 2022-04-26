@@ -51,4 +51,37 @@ router.post("/drugs", patientController.createNewDrug);
 // delete patient
 router.delete("/patient/delete/:id", patientController.deletePatient);
 
+// most side effects patient
+router.get("/info/mostSideEffects", patientController.mostSideEffectsPatient);
+
+// patients who always exprience side effects
+router.get("/info/patientsAlwaysSide", patientController.patientsAlwaysSideEffects);
+
+// all drugs with side effects
+router.get("/info/allSideEffects", patientController.getDrugsWithSideEffects);
+
+// drugs with digestive issues
+router.get("/info/digestiveSideEffects", patientController.getDrugsWithDigestiveIssue)
+
+// drugs with no side effects
+router.get("/info/noSideEffects", patientController.getDrugsNoSideEffects);
+
+// drugs with severe side effects
+router.get("/info/severeSideEffects", patientController.getDrugsSevereSideEffects);
+
+// drugs perscibed in 2022
+router.get("/info/drugsFrom2022", patientController.getDrugsFrom2022);
+
+// average price non-generic drugs
+router.get("/info/averageNonGenPrice", patientController.getAvgNonGenDrugPrice);
+
+// all patients at risk of jaundice
+router.get("/info/patientsJaundiceRisk", patientController.patientsAtRiskOfJaundice);
+
+// average patient statistics
+router.get("/info/averagePatient", patientController.averagePatient);
+
+// all patient info: drugs, conditions, side effects
+router.get("/info/allPatientInfo", patientController.patientConditionDrugSideEffect);
+
 module.exports = router;

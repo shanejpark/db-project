@@ -61,7 +61,7 @@ Drug.getTreatments = (condition_name, result) => {
   });
 };
 
-// get all drugs
+// get all drugs with side effects
 Drug.getDrugsWithSideEffects = (result) => {
   return dbConn.query("select drugs.medical_name as drug, drugs.common_name, side_effects.name as side_effect " +
   "from drugs " +

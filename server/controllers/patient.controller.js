@@ -3,6 +3,7 @@ const DrugModel = require("./drug.model");
 const SideEffectModel = require("./sideeffect.model");
 const CountModel = require("./count.model");
 const ManufacturerModel = require("./manufacturer.model");
+const Count = require("./count.model");
 
 // get all patient list
 exports.getPatientList = (req, res) => {
@@ -161,3 +162,136 @@ exports.getManufacturer = (req, res) => {
     }
   );
 };
+
+// most side effects patient
+exports.mostSideEffectsPatient = (req, res) => {
+  return PatientModel.mostSideEffectsPatient(
+    (err, patient) => {
+      if (err) return res.send(err);
+      console.log("most side effects", patient);
+      res.send(patient);
+    }
+  );
+};
+
+// patients who always exprience side effects
+exports.patientsAlwaysSideEffects = (req, res) => {
+  return PatientModel.patientsAlwaysSideEffects(
+    (err, patient) => {
+      if (err) return res.send(err);
+      console.log("always side effects", patient);
+      res.send(patient);
+    }
+  );
+};
+
+// side effects of every drug
+exports.getDrugsWithSideEffects = (req, res) => {
+  return DrugModel.getDrugsWithSideEffects(
+    (err, drug) => {
+      if (err) return res.send(err);
+      console.log("all side effects drugs", drug);
+      res.send(drug);
+    }
+  );
+};
+
+// drugs with digestive issues for patients
+exports.getDrugsWithDigestiveIssue = (req, res) => {
+  return DrugModel.getDrugsWithDigestiveIssue(
+    (err, drug) => {
+      if (err) return res.send(err);
+      console.log("digestive issues", drug);
+      res.send(drug);
+    }
+  );
+};
+
+// drugs with no side effects
+exports.getDrugsNoSideEffects = (req, res) => {
+  return DrugModel.getDrugsNoSideEffects(
+    (err, drug) => {
+      if (err) return res.send(err);
+      console.log("no side effects", drug);
+      res.send(drug);
+    }
+  );
+};
+
+// drugs with severe side effects
+exports.getDrugsSevereSideEffects = (req, res) => {
+  return DrugModel.getDrugsSevereSideEffects(
+    (err, drug) => {
+      if (err) return res.send(err);
+      console.log("severe side effects", drug);
+      res.send(drug);
+    }
+  );
+};
+
+// drugs with severe side effects
+exports.getCountManufacturerFentanyl = (req, res) => {
+  return CountModel.getCountManufacturerFentanyl(
+    (err, count) => {
+      if (err) return res.send(err);
+      console.log("num fentanyl", count);
+      res.send(count);
+    }
+  );
+};
+
+// drugs perscribed in 2022
+exports.getDrugsFrom2022 = (req, res) => {
+  return DrugModel.getDrugsFrom2022(
+    (err, drug) => {
+      if (err) return res.send(err);
+      console.log("severe side effects", drug);
+      res.send(drug);
+    }
+  );
+};
+
+// average price of drugs, non-generic
+exports.getAvgNonGenDrugPrice = (req, res) => {
+  return CountModel.getAvgNonGenDrugPrice(
+    (err, count) => {
+      if (err) return res.send(err);
+      console.log("num fentanyl", count);
+      res.send(count);
+    }
+  );
+};
+
+// all patients at risk of jaundice
+exports.patientsAtRiskOfJaundice = (req, res) => {
+  return PatientModel.patientsAtRiskOfJaundice(
+    (err, patient) => {
+      if (err) return res.send(err);
+      console.log("always side effects", patient);
+      res.send(patient);
+    }
+  );
+};
+
+// average patient
+exports.averagePatient = (req, res) => {
+  return CountModel.averagePatient(
+    (err, count) => {
+      if (err) return res.send(err);
+      console.log("avg patient ", count);
+      res.send(count);
+    }
+  );
+};
+
+// all info on patients, drugs taken, conditions, and side effects
+exports.patientConditionDrugSideEffect = (req, res) => {
+  return PatientModel.patientConditionDrugSideEffect(
+    (err, patient) => {
+      if (err) return res.send(err);
+      console.log("all info on patients", patient);
+      res.send(patient);
+    }
+  );
+};
+
