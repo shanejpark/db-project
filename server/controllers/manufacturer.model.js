@@ -5,7 +5,7 @@ var Manufacturer = function (manufacturer) {
   this.price = manufacturer.price;
 };
 
-// get treatments
+// get manufacturers for drug
 Manufacturer.getManufacturer = (drug_name, result) => {
   return dbConn.query(
     "select name, price from manufacturers join manufacturers_make_drugs using(manufacturer_id) join drugs using(drug_id) where drugs.medical_name like ?;",

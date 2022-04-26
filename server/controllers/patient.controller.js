@@ -57,6 +57,7 @@ exports.createSideEffectForPatient = (req, res) => {
     req.params.patient_name,
     req.params.drug_name,
     req.params.sideeffect_name,
+    req.params.severity,
     (err, patient) => {
       if (err) return res.send(err);
       res.json({ success: true, message: "Side effect created successully!" });
@@ -69,10 +70,10 @@ exports.getSideEffects = (req, res) => {
   SideEffectModel.getSideEffects(
     req.params.patient_name,
     req.params.drug_name,
-    (err, patient) => {
+    (err, sideEffect) => {
       if (err) return res.send(err);
-      console.log("patient and drug", patient);
-      res.send(patient);
+      console.log("side effects found", sideEffect);
+      res.send(sideEffect[0]);
     }
   );
 };
@@ -98,7 +99,7 @@ exports.getDrugByName = (req, res) => {
   });
 };
 
-// create new patient
+// create new drug
 exports.createNewDrug = (req, res) => {
   const drugReqData = new DrugModel(req.body);
   console.log("drugReqData", drugReqData);
@@ -123,7 +124,7 @@ exports.createNewDrug = (req, res) => {
 exports.getTreatments = (req, res) => {
   DrugModel.getTreatments(req.params.condition_name, (err, drug) => {
     if (err) return res.send(err);
-    res.send(drug);
+    res.send(drug[0]);
   });
 };
 
@@ -133,7 +134,7 @@ exports.countSideEffectForManufacturer = (req, res) => {
     req.params.manufacturer_name,
     (err, count) => {
       if (err) return res.send(err);
-      res.send(count);
+      res.send(count[0]);
     }
   );
 };
@@ -144,7 +145,7 @@ exports.countPatientsForManufacturer = (req, res) => {
     req.params.manufacturer_name,
     (err, count) => {
       if (err) return res.send(err);
-      res.send(count);
+      res.send(count[0]);
     }
   );
 };
