@@ -41,12 +41,10 @@ function Patient() {
   }
 
   async function loadPatients() {
-    return fetch("http://localhost:5000/api/v1/patient")
-      .then(function (response) {
-        return response.json();
-      })
-      .then(function (myJson) {
-        setPatients(myJson);
+    return axios
+      .get("http://localhost:5000/api/v1/patient")
+      .then((response) => {
+        setPatients(response.data);
       });
   }
 
@@ -185,7 +183,7 @@ function Patient() {
                 </Card.Body>
               </Card>
             </Col>
-            <Col>{sideEffectsTable()}</Col>
+            <Col>{sideEffects.length > 0 && sideEffectsTable()}</Col>
           </Row>
           <Row className="m-5">
             <div>

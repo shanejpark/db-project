@@ -17,13 +17,9 @@ function Drug() {
   const [drugs, setDrugs] = useState([]);
 
   async function loadDrugs() {
-    return fetch("http://localhost:5000/api/v1/drugs")
-      .then(function (response) {
-        return response.json();
-      })
-      .then(function (myJson) {
-        setDrugs(myJson);
-      });
+    return axios.get("http://localhost:5000/api/v1/drugs").then((response) => {
+      setDrugs(response.data);
+    });
   }
 
   async function searchManufacturer() {
@@ -91,34 +87,36 @@ function Drug() {
     <div className={styles.filter}>
       <Container className={styles.containerBlock}>
         <Row className="m-5">{listAllDrugs()}</Row>
-        <Col>
-          <Card className={styles.card}>
-            <Card.Body>
-              <Card.Title>Get side effects</Card.Title>
-              <Form>
-                <Form.Group className="mb-3" controlId="form">
-                  <Form.Label column="sm">Drug</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Drug"
-                    value={drugName}
-                    onChange={(e) => setDrugName(e.target.value)}
-                  />
-                </Form.Group>
-                <Button
-                  variant="dark"
-                  type="button"
-                  size="sm"
-                  className={styles.button}
-                  onClick={searchManufacturer}
-                >
-                  Search
-                </Button>
-              </Form>
-            </Card.Body>
-          </Card>
-        </Col>
-        <Col>{manufacturerTable()}</Col>
+        <Row className="m-5">
+          <Col>
+            <Card className={styles.card}>
+              <Card.Body>
+                <Card.Title>Get side effects</Card.Title>
+                <Form>
+                  <Form.Group className="mb-3" controlId="form">
+                    <Form.Label column="sm">Drug</Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="Drug"
+                      value={drugName}
+                      onChange={(e) => setDrugName(e.target.value)}
+                    />
+                  </Form.Group>
+                  <Button
+                    variant="dark"
+                    type="button"
+                    size="sm"
+                    className={styles.button}
+                    onClick={searchManufacturer}
+                  >
+                    Search
+                  </Button>
+                </Form>
+              </Card.Body>
+            </Card>
+          </Col>
+          <Col>{manufacturers.length > 0 && manufacturerTable()}</Col>
+        </Row>
       </Container>
     </div>
   );
