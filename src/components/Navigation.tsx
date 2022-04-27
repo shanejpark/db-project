@@ -26,7 +26,8 @@ function Navigation() {
           <Nav justify className="me-auto">
             <NavItem link="/patient" text="Patient" />
             <NavItem link="/drugs" text="Drugs" />
-            <NavItem link="/manufacturor" text="Manufacturor" />
+            <NavItem link="/side_effects" text="Side Effects" />
+            <NavItem link="/manufacturer" text="Manufacturer" />
             <NavItem link="/info" text="Info" />
           </Nav>
         </Container>

@@ -17,7 +17,7 @@ router.get(
 
 // number of patients a manufacturer is supplying drugs for
 router.get(
-  "/manufacturer/:manufacturer_name",
+  "/manufacturer/patient/:manufacturer_name",
   patientController.countPatientsForManufacturer
 );
 
@@ -32,7 +32,7 @@ router.get("/condition/:condition_name", patientController.getTreatments);
 
 // get side effects from a drug the patient has used
 router.get(
-  "/manufacturer/:manufacturer_name",
+  "/manufacturer/side_effect/:manufacturer_name",
   patientController.countSideEffectForManufacturer
 );
 
@@ -55,19 +55,28 @@ router.delete("/patient/delete/:id", patientController.deletePatient);
 router.get("/info/mostSideEffects", patientController.mostSideEffectsPatient);
 
 // patients who always exprience side effects
-router.get("/info/patientsAlwaysSide", patientController.patientsAlwaysSideEffects);
+router.get(
+  "/info/patientsAlwaysSide",
+  patientController.patientsAlwaysSideEffects
+);
 
 // all drugs with side effects
 router.get("/info/allSideEffects", patientController.getDrugsWithSideEffects);
 
 // drugs with digestive issues
-router.get("/info/digestiveSideEffects", patientController.getDrugsWithDigestiveIssue)
+router.get(
+  "/info/digestiveSideEffects",
+  patientController.getDrugsWithDigestiveIssue
+);
 
 // drugs with no side effects
 router.get("/info/noSideEffects", patientController.getDrugsNoSideEffects);
 
 // drugs with severe side effects
-router.get("/info/severeSideEffects", patientController.getDrugsSevereSideEffects);
+router.get(
+  "/info/severeSideEffects",
+  patientController.getDrugsSevereSideEffects
+);
 
 // drugs perscibed in 2022
 router.get("/info/drugsFrom2022", patientController.getDrugsFrom2022);
@@ -76,12 +85,18 @@ router.get("/info/drugsFrom2022", patientController.getDrugsFrom2022);
 router.get("/info/averageNonGenPrice", patientController.getAvgNonGenDrugPrice);
 
 // all patients at risk of jaundice
-router.get("/info/patientsJaundiceRisk", patientController.patientsAtRiskOfJaundice);
+router.get(
+  "/info/patientsJaundiceRisk",
+  patientController.patientsAtRiskOfJaundice
+);
 
 // average patient statistics
 router.get("/info/averagePatient", patientController.averagePatient);
 
 // all patient info: drugs, conditions, side effects
-router.get("/info/allPatientInfo", patientController.patientConditionDrugSideEffect);
+router.get(
+  "/info/allPatientInfo",
+  patientController.patientConditionDrugSideEffect
+);
 
 module.exports = router;

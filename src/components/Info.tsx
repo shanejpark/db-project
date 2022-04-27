@@ -12,10 +12,6 @@ import styles from "./components.module.css";
 import axios from "axios";
 
 function Info() {
-  const [patientName, setPatientName] = useState("");
-  const [drugPatientName, setDrugPatientName] = useState("");
-  const [sideEffects, setSideEffects] = useState([]);
-
   const [drugName, setDrugName] = useState("");
   const [manufacturers, setManufacturers] = useState([]);
 
@@ -37,7 +33,14 @@ function Info() {
     });
   }
 
-  async function getInfo() {
+  async function searchManufacturer() {
+    return get(
+      `http://localhost:5000/api/v1/drugs/manufacturer/${drugName}`,
+      setManufacturers
+    );
+  }
+
+  useEffect(() => {
     get(
       `http://localhost:5000/api/v1/info/mostSideEffects`,
       setMostSideEffects
@@ -67,46 +70,7 @@ function Info() {
     );
     get(`http://localhost:5000/api/v1/info/averagePatient`, setAveragePatient);
     get(`http://localhost:5000/api/v1/info/allPatientInfo`, setAllPatientInfo);
-  }
-
-  async function searchManufacturer() {
-    return get(
-      `http://localhost:5000/api/v1/drugs/manufacturer/${drugName}`,
-      setManufacturers
-    );
-  }
-
-  async function searchPatientDrug() {
-    return get(
-      `http://localhost:5000/api/v1/side_effect/${patientName}/${drugPatientName}`,
-      setSideEffects
-    );
-  }
-
-  useEffect(() => {
-    getInfo();
   }, []);
-
-  function sideEffectsTable() {
-    return (
-      <div>
-        <Table striped bordered hover variant="dark">
-          <thead>
-            <tr>
-              <th>Side Effects</th>
-            </tr>
-          </thead>
-          <tbody>
-            {sideEffects.map((sideEffect) => (
-              <tr>
-                <td>{sideEffect["name"]}</td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
-      </div>
-    );
-  }
 
   function manufacturerTable() {
     return (
@@ -499,46 +463,6 @@ function Info() {
             </Card>
           </Col>
           <Col>{manufacturers.length > 0 && manufacturerTable()}</Col>
-        </Row>
-        <Row className="m-5">
-          <Col>
-            <Card className={styles.card}>
-              <Card.Body>
-                <Card.Title>Get side effects</Card.Title>
-                <Form>
-                  <Form.Group className="mb-3" controlId="form">
-                    <Form.Label column="sm">Patient Name</Form.Label>
-                    <Form.Control
-                      type="text"
-                      placeholder="Patient"
-                      value={patientName}
-                      onChange={(e) => setPatientName(e.target.value)}
-                    />
-                  </Form.Group>
-
-                  <Form.Group className="mb-3" controlId="form">
-                    <Form.Label column="sm">Drug</Form.Label>
-                    <Form.Control
-                      type="text"
-                      placeholder="Drug"
-                      value={drugPatientName}
-                      onChange={(e) => setDrugPatientName(e.target.value)}
-                    />
-                  </Form.Group>
-                  <Button
-                    variant="dark"
-                    type="button"
-                    size="sm"
-                    className={styles.button}
-                    onClick={searchPatientDrug}
-                  >
-                    Search
-                  </Button>
-                </Form>
-              </Card.Body>
-            </Card>
-          </Col>
-          <Col>{sideEffects.length > 0 && sideEffectsTable()}</Col>
         </Row>
         <Row className="m-5">{mostSideEffectsTable()}</Row>
         <Row className="m-5">{patientAlwaysSideTable()}</Row>

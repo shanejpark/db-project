@@ -1,13 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Card,
-  Form,
-  Button,
-  Row,
-  Container,
-  Col,
-  Table,
-} from "react-bootstrap";
+import { Form, Button, Row, Container, Table } from "react-bootstrap";
 import styles from "./components.module.css";
 import axios from "axios";
 
@@ -70,12 +62,7 @@ function Patient() {
       country: country,
       state: state,
       city: city,
-      sex:
-        sex.toLowerCase() === "male"
-          ? "0"
-          : sex.toLowerCase() === "female"
-          ? "1"
-          : "",
+      sex: sex.toLowerCase() === "male" ? 0 : 1,
       weight: weight,
       height: height,
     });
@@ -111,7 +98,7 @@ function Patient() {
                 <td>{patient["country"]}</td>
                 <td>{patient["state"]}</td>
                 <td>{patient["city"]}</td>
-                <td>{patient["sex"] === "0" ? "male" : "female"}</td>
+                <td>{patient["sex"] === 0 ? "male" : "female"}</td>
                 <td>{patient["weight"]}</td>
                 <td>{patient["height"]}</td>
               </tr>
