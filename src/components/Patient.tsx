@@ -12,11 +12,8 @@ import styles from "./components.module.css";
 import axios from "axios";
 
 function Patient() {
-  const [patientName, setPatientName] = useState("");
-  const [drugName, setDrugName] = useState("");
-
-  const [sideEffects, setSideEffects] = useState([]);
   const [patients, setPatients] = useState([]);
+  const [patient, setPatient] = useState("");
 
   const [name, setName] = useState("");
   const [age, setAge] = useState("");
@@ -52,13 +49,14 @@ function Patient() {
     loadPatients();
   }, []);
 
-  async function searchPatientDrug() {
-    return axios
-      .get(
-        `http://localhost:5000/api/v1/side_effect/${patientName}/${drugName}`
-      )
-      .then((response) => {
-        setSideEffects(response.data);
+  function deletePatient() {
+    axios
+      .delete(`http://localhost:5000/api/v1/patient/delete/${patient}`)
+      .then((result) => {
+        loadPatients();
+      })
+      .catch(() => {
+        alert("Error in the Code");
       });
   }
 
@@ -72,34 +70,18 @@ function Patient() {
       country: country,
       state: state,
       city: city,
-      sex: sex,
+      sex:
+        sex.toLowerCase() === "male"
+          ? "0"
+          : sex.toLowerCase() === "female"
+          ? "1"
+          : "",
       weight: weight,
       height: height,
     });
     alert("Data inserted");
     clearState();
     return loadPatients();
-  }
-
-  function sideEffectsTable() {
-    return (
-      <div>
-        <Table striped bordered hover variant="dark">
-          <thead>
-            <tr>
-              <th>Side Effects</th>
-            </tr>
-          </thead>
-          <tbody>
-            {sideEffects.map((sideEffect) => (
-              <tr>
-                <td>{sideEffect["name"]}</td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
-      </div>
-    );
   }
 
   function listAllPatients() {
@@ -142,166 +124,140 @@ function Patient() {
 
   return (
     <>
-      <div className={styles.filter}>
-        <Container className={styles.containerBlock}>
-          <Row className="m-5">{listAllPatients()}</Row>
-          <Row className="m-5">
-            <Col>
-              <Card className={styles.card}>
-                <Card.Body>
-                  <Card.Title>Get side effects</Card.Title>
-                  <Form>
-                    <Form.Group className="mb-3" controlId="form">
-                      <Form.Label column="sm">Patient Name</Form.Label>
-                      <Form.Control
-                        type="text"
-                        placeholder="Patient"
-                        value={patientName}
-                        onChange={(e) => setPatientName(e.target.value)}
-                      />
-                    </Form.Group>
+      <Container className={styles.containerBlock}>
+        <Row className="m-5">{listAllPatients()}</Row>
+        <Row className="m-5">
+          <h2>Add new patient</h2>
+          <Form onSubmit={submitNewPatient} className="mt-3">
+            <Form.Group className="mb-3" controlId="form">
+              <Form.Label column="sm">Patient Name</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+            </Form.Group>
 
-                    <Form.Group className="mb-3" controlId="form">
-                      <Form.Label column="sm">Drug</Form.Label>
-                      <Form.Control
-                        type="text"
-                        placeholder="Drug"
-                        value={drugName}
-                        onChange={(e) => setDrugName(e.target.value)}
-                      />
-                    </Form.Group>
-                    <Button
-                      variant="dark"
-                      type="button"
-                      size="sm"
-                      className={styles.button}
-                      onClick={searchPatientDrug}
-                    >
-                      Search
-                    </Button>
-                  </Form>
-                </Card.Body>
-              </Card>
-            </Col>
-            <Col>{sideEffects.length > 0 && sideEffectsTable()}</Col>
-          </Row>
-          <Row className="m-5">
-            <div>
-              <h2>Add new patient</h2>
-              <Form onSubmit={submitNewPatient} className="mt-3">
-                <Form.Group className="mb-3" controlId="form">
-                  <Form.Label column="sm">Patient Name</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                  />
-                </Form.Group>
+            <Form.Group className="mb-3" controlId="form">
+              <Form.Label column="sm">Patient Name</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Age"
+                value={age}
+                onChange={(e) => setAge(e.target.value)}
+              />
+            </Form.Group>
 
-                <Form.Group className="mb-3" controlId="form">
-                  <Form.Label column="sm">Patient Name</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Age"
-                    value={age}
-                    onChange={(e) => setAge(e.target.value)}
-                  />
-                </Form.Group>
+            <Form.Group className="mb-3" controlId="form">
+              <Form.Label column="sm">Ethnicity</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Ethnicity"
+                value={ethnicity}
+                onChange={(e) => setEthnicity(e.target.value)}
+                required
+              />
+            </Form.Group>
 
-                <Form.Group className="mb-3" controlId="form">
-                  <Form.Label column="sm">Ethnicity</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Ethnicity"
-                    value={ethnicity}
-                    onChange={(e) => setEthnicity(e.target.value)}
-                    required
-                  />
-                </Form.Group>
+            <Form.Group className="mb-3" controlId="form">
+              <Form.Label column="sm">Country</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Country"
+                value={country}
+                onChange={(e) => setCountry(e.target.value)}
+              />
+            </Form.Group>
 
-                <Form.Group className="mb-3" controlId="form">
-                  <Form.Label column="sm">Country</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Country"
-                    value={country}
-                    onChange={(e) => setCountry(e.target.value)}
-                  />
-                </Form.Group>
+            <Form.Group className="mb-3" controlId="form">
+              <Form.Label column="sm">State</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="State"
+                value={state}
+                onChange={(e) => setState(e.target.value)}
+              />
+            </Form.Group>
 
-                <Form.Group className="mb-3" controlId="form">
-                  <Form.Label column="sm">State</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="State"
-                    value={state}
-                    onChange={(e) => setState(e.target.value)}
-                  />
-                </Form.Group>
+            <Form.Group className="mb-3" controlId="form">
+              <Form.Label column="sm">City</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="City"
+                value={city}
+                onChange={(e) => setCity(e.target.value)}
+              />
+            </Form.Group>
 
-                <Form.Group className="mb-3" controlId="form">
-                  <Form.Label column="sm">City</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="City"
-                    value={city}
-                    onChange={(e) => setCity(e.target.value)}
-                  />
-                </Form.Group>
+            <Form.Group className="mb-3" controlId="form">
+              <Form.Label column="sm">Sex</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Sex"
+                value={sex}
+                onChange={(e) => setSex(e.target.value)}
+              />
+            </Form.Group>
 
-                <Form.Group className="mb-3" controlId="form">
-                  <Form.Label column="sm">Sex</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Sex"
-                    value={sex}
-                    onChange={(e) => setSex(e.target.value)}
-                  />
-                </Form.Group>
+            <Form.Group className="mb-3" controlId="form">
+              <Form.Label column="sm">Weight (lbs)</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Weight (lbs)"
+                value={weight}
+                onChange={(e) => setWeight(e.target.value)}
+              />
+            </Form.Group>
 
-                <Form.Group className="mb-3" controlId="form">
-                  <Form.Label column="sm">Weight (lbs)</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Weight (lbs)"
-                    value={weight}
-                    onChange={(e) => setWeight(e.target.value)}
-                  />
-                </Form.Group>
+            <Form.Group className="mb-3" controlId="form">
+              <Form.Label column="sm">Height (in)</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Height (in)"
+                value={height}
+                onChange={(e) => setHeight(e.target.value)}
+              />
+            </Form.Group>
 
-                <Form.Group className="mb-3" controlId="form">
-                  <Form.Label column="sm">Height (in)</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Height (in)"
-                    value={height}
-                    onChange={(e) => setHeight(e.target.value)}
-                  />
-                </Form.Group>
+            <Button variant="dark" type="button" size="sm" onClick={clearState}>
+              Clear
+            </Button>
 
-                <Button
-                  variant="dark"
-                  type="button"
-                  size="sm"
-                  onClick={clearState}
-                >
-                  Clear
-                </Button>
+            <Button
+              variant="dark"
+              type="submit"
+              size="sm"
+              className={styles.button}
+            >
+              Submit
+            </Button>
+          </Form>
+        </Row>
+        <Row className="m-5">
+          <h2>Delete Patient</h2>
+          <Form onSubmit={deletePatient} className="mt-3">
+            <Form.Group className="mb-3" controlId="form">
+              <Form.Label column="sm">Patient Name</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Name"
+                value={patient}
+                onChange={(e) => setPatient(e.target.value)}
+              />
+            </Form.Group>
 
-                <Button
-                  variant="dark"
-                  type="submit"
-                  size="sm"
-                  className={styles.button}
-                >
-                  Submit
-                </Button>
-              </Form>
-            </div>
-          </Row>
-        </Container>
-      </div>
+            <Button
+              variant="dark"
+              type="submit"
+              size="sm"
+              className={styles.button}
+            >
+              Submit
+            </Button>
+          </Form>
+        </Row>
+      </Container>
     </>
   );
 }

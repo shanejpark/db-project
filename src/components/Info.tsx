@@ -12,6 +12,13 @@ import styles from "./components.module.css";
 import axios from "axios";
 
 function Info() {
+  const [patientName, setPatientName] = useState("");
+  const [drugPatientName, setDrugPatientName] = useState("");
+  const [sideEffects, setSideEffects] = useState([]);
+
+  const [drugName, setDrugName] = useState("");
+  const [manufacturers, setManufacturers] = useState([]);
+
   const [mostSideEffects, setMostSideEffects] = useState([]);
   const [patientsAlwaysSide, setPatientsAlwaysSide] = useState([]);
   const [allSideEffects, setAllSideEffects] = useState([]);
@@ -62,9 +69,65 @@ function Info() {
     get(`http://localhost:5000/api/v1/info/allPatientInfo`, setAllPatientInfo);
   }
 
+  async function searchManufacturer() {
+    return get(
+      `http://localhost:5000/api/v1/drugs/manufacturer/${drugName}`,
+      setManufacturers
+    );
+  }
+
+  async function searchPatientDrug() {
+    return get(
+      `http://localhost:5000/api/v1/side_effect/${patientName}/${drugPatientName}`,
+      setSideEffects
+    );
+  }
+
   useEffect(() => {
     getInfo();
   }, []);
+
+  function sideEffectsTable() {
+    return (
+      <div>
+        <Table striped bordered hover variant="dark">
+          <thead>
+            <tr>
+              <th>Side Effects</th>
+            </tr>
+          </thead>
+          <tbody>
+            {sideEffects.map((sideEffect) => (
+              <tr>
+                <td>{sideEffect["name"]}</td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      </div>
+    );
+  }
+
+  function manufacturerTable() {
+    return (
+      <div>
+        <Table striped bordered hover variant="dark">
+          <thead>
+            <tr>
+              <th>Manufacturers</th>
+            </tr>
+          </thead>
+          <tbody>
+            {manufacturers.map((manufacturer) => (
+              <tr>
+                <td>{manufacturer["name"]}</td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      </div>
+    );
+  }
 
   function mostSideEffectsTable() {
     return (
@@ -299,9 +362,184 @@ function Info() {
     );
   }
 
+  function patientsJaundiceRiskTable() {
+    return (
+      <div>
+        <Table striped bordered hover variant="dark">
+          <thead>
+            <tr>
+              <th colSpan={4}>
+                Patients at risk of developing Jaundice as Side Effect
+              </th>
+            </tr>
+          </thead>
+          <thead>
+            <tr>
+              <th>Patient Name</th>
+              <th>Drug Name</th>
+            </tr>
+          </thead>
+          <tbody>
+            {patientsJaundiceRisk.map((drug) => (
+              <tr>
+                <td>{drug["name"]}</td>
+                <td>{drug["prescribed"]}</td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      </div>
+    );
+  }
+
+  function averagePatientTable() {
+    return (
+      <div>
+        <Table striped bordered hover variant="dark">
+          <thead>
+            <tr>
+              <th colSpan={4}>
+                Average statistics of patient who is treated for a fever
+              </th>
+            </tr>
+          </thead>
+          <thead>
+            <tr>
+              <th>Average Age</th>
+              <th>Average Weight (lbs)</th>
+              <th>Average Height (in)</th>
+            </tr>
+          </thead>
+          <tbody>
+            {averagePatient.map((drug) => (
+              <tr>
+                <td>{drug["avg_age"]}</td>
+                <td>{drug["avg_weight"]}</td>
+                <td>{drug["avg_height"]}</td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      </div>
+    );
+  }
+
+  function allPatientInfoTable() {
+    return (
+      <div>
+        <Table striped bordered hover variant="dark">
+          <thead>
+            <tr>
+              <th colSpan={8}>
+                Every Single Patient, the drugs they're taking, and side effects
+              </th>
+            </tr>
+          </thead>
+          <thead>
+            <tr>
+              <th>Patient Name</th>
+              <th>Patient Age</th>
+              <th>Condition</th>
+              <th>Condition Name</th>
+              <th>Condition Cause</th>
+              <th>Drug Name</th>
+              <th>Dosage</th>
+              <th>Side Effect</th>
+            </tr>
+          </thead>
+          <tbody>
+            {allPatientInfo.map((drug) => (
+              <tr>
+                <td>{drug["patient"]}</td>
+                <td>{drug["age"]}</td>
+                <td>{drug["condition"]}</td>
+                <td>{drug["cause"]}</td>
+                <td>{drug["drug"]}</td>
+                <td>{drug["dosage"]}</td>
+                <td>{drug["condition"]}</td>
+                <td>{drug["side_effect"]}</td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      </div>
+    );
+  }
+
   return (
     <div className={styles.filter}>
       <Container className={styles.containerBlock}>
+        <Row className="m-5">{allPatientInfoTable()}</Row>
+        <Row className="m-5">
+          <Col>
+            <Card className={styles.card}>
+              <Card.Body>
+                <Card.Title>Get side effects</Card.Title>
+                <Form>
+                  <Form.Group className="mb-3" controlId="form">
+                    <Form.Label column="sm">Drug</Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="Drug"
+                      value={drugName}
+                      onChange={(e) => setDrugName(e.target.value)}
+                    />
+                  </Form.Group>
+                  <Button
+                    variant="dark"
+                    type="button"
+                    size="sm"
+                    className={styles.button}
+                    onClick={searchManufacturer}
+                  >
+                    Search
+                  </Button>
+                </Form>
+              </Card.Body>
+            </Card>
+          </Col>
+          <Col>{manufacturers.length > 0 && manufacturerTable()}</Col>
+        </Row>
+        <Row className="m-5">
+          <Col>
+            <Card className={styles.card}>
+              <Card.Body>
+                <Card.Title>Get side effects</Card.Title>
+                <Form>
+                  <Form.Group className="mb-3" controlId="form">
+                    <Form.Label column="sm">Patient Name</Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="Patient"
+                      value={patientName}
+                      onChange={(e) => setPatientName(e.target.value)}
+                    />
+                  </Form.Group>
+
+                  <Form.Group className="mb-3" controlId="form">
+                    <Form.Label column="sm">Drug</Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="Drug"
+                      value={drugPatientName}
+                      onChange={(e) => setDrugPatientName(e.target.value)}
+                    />
+                  </Form.Group>
+                  <Button
+                    variant="dark"
+                    type="button"
+                    size="sm"
+                    className={styles.button}
+                    onClick={searchPatientDrug}
+                  >
+                    Search
+                  </Button>
+                </Form>
+              </Card.Body>
+            </Card>
+          </Col>
+          <Col>{sideEffects.length > 0 && sideEffectsTable()}</Col>
+        </Row>
         <Row className="m-5">{mostSideEffectsTable()}</Row>
         <Row className="m-5">{patientAlwaysSideTable()}</Row>
         <Row className="m-5">{allSideEffectsTable()}</Row>
@@ -310,6 +548,8 @@ function Info() {
         <Row className="m-5">{severeSideEffectsTable()}</Row>
         <Row className="m-5">{drugsFrom2022Table()}</Row>
         <Row className="m-5">{averageNonGenPriceTable()}</Row>
+        <Row className="m-5">{patientsJaundiceRiskTable()}</Row>
+        <Row className="m-5">{averagePatientTable()}</Row>
       </Container>
     </div>
   );
