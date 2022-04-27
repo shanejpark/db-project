@@ -8,6 +8,7 @@ import Drug from "./components/Drug";
 import Info from "./components/Info";
 import SideEffect from "./components/SideEffect";
 import Manufacturer from "./components/Manufacturer";
+import Home from "./components/Home";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -16,6 +17,7 @@ root.render(
   <Router>
     <Navigation />
     <Routes>
+      <Route path="/" element={<Home />} />
       <Route path="/patient" element={<Patient />} />
       <Route path="/drugs" element={<Drug />} />
       <Route path="/side_effects" element={<SideEffect />} />

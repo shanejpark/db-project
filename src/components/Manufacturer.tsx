@@ -19,7 +19,7 @@ function Manufacturer() {
   const [patientCount, setPatientCount] = useState([]);
 
   async function countSideEffects() {
-    return axios
+    axios
       .get(
         `http://localhost:5000/api/v1/manufacturer/side_effect/${manufacturerSideEffect}`
       )
@@ -29,7 +29,7 @@ function Manufacturer() {
   }
 
   async function countPatients() {
-    return axios
+    axios
       .get(
         `http://localhost:5000/api/v1/manufacturer/patient/${manufacturerPatient}`
       )
@@ -38,7 +38,7 @@ function Manufacturer() {
       });
   }
 
-  function sideEffectCountTable() {
+  function sideEffectCountTable(): JSX.Element {
     return (
       <div>
         <Table striped bordered hover variant="dark">
@@ -143,7 +143,7 @@ function Manufacturer() {
               </Card.Body>
             </Card>
           </Col>
-          <Col>{sideEffectCount.length > 0 && sideEffectCountTable()}</Col>
+          <Col>{patientCount.length > 0 && patientCountTable()}</Col>
         </Row>
       </Container>
     </div>

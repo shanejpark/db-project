@@ -12,9 +12,6 @@ import styles from "./components.module.css";
 import axios from "axios";
 
 function Info() {
-  const [drugName, setDrugName] = useState("");
-  const [manufacturers, setManufacturers] = useState([]);
-
   const [mostSideEffects, setMostSideEffects] = useState([]);
   const [patientsAlwaysSide, setPatientsAlwaysSide] = useState([]);
   const [allSideEffects, setAllSideEffects] = useState([]);
@@ -31,13 +28,6 @@ function Info() {
     return axios.get(url).then((response) => {
       func(response.data);
     });
-  }
-
-  async function searchManufacturer() {
-    return get(
-      `http://localhost:5000/api/v1/drugs/manufacturer/${drugName}`,
-      setManufacturers
-    );
   }
 
   useEffect(() => {
@@ -71,27 +61,6 @@ function Info() {
     get(`http://localhost:5000/api/v1/info/averagePatient`, setAveragePatient);
     get(`http://localhost:5000/api/v1/info/allPatientInfo`, setAllPatientInfo);
   }, []);
-
-  function manufacturerTable() {
-    return (
-      <div>
-        <Table striped bordered hover variant="dark">
-          <thead>
-            <tr>
-              <th>Manufacturers</th>
-            </tr>
-          </thead>
-          <tbody>
-            {manufacturers.map((manufacturer) => (
-              <tr>
-                <td>{manufacturer["name"]}</td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
-      </div>
-    );
-  }
 
   function mostSideEffectsTable() {
     return (
@@ -434,36 +403,6 @@ function Info() {
     <div className={styles.filter}>
       <Container className={styles.containerBlock}>
         <Row className="m-5">{allPatientInfoTable()}</Row>
-        <Row className="m-5">
-          <Col>
-            <Card className={styles.card}>
-              <Card.Body>
-                <Card.Title>Get side effects</Card.Title>
-                <Form>
-                  <Form.Group className="mb-3" controlId="form">
-                    <Form.Label column="sm">Drug</Form.Label>
-                    <Form.Control
-                      type="text"
-                      placeholder="Drug"
-                      value={drugName}
-                      onChange={(e) => setDrugName(e.target.value)}
-                    />
-                  </Form.Group>
-                  <Button
-                    variant="dark"
-                    type="button"
-                    size="sm"
-                    className={styles.button}
-                    onClick={searchManufacturer}
-                  >
-                    Search
-                  </Button>
-                </Form>
-              </Card.Body>
-            </Card>
-          </Col>
-          <Col>{manufacturers.length > 0 && manufacturerTable()}</Col>
-        </Row>
         <Row className="m-5">{mostSideEffectsTable()}</Row>
         <Row className="m-5">{patientAlwaysSideTable()}</Row>
         <Row className="m-5">{allSideEffectsTable()}</Row>

@@ -1,10 +1,21 @@
 import React, { useState, useEffect } from "react";
-import { Form, Button, Row, Container, Table } from "react-bootstrap";
+import {
+  Col,
+  Card,
+  Form,
+  Button,
+  Row,
+  Container,
+  Table,
+} from "react-bootstrap";
 import styles from "./components.module.css";
 import axios from "axios";
 
 function Drug() {
   const [drugs, setDrugs] = useState([]);
+
+  const [drugName, setDrugName] = useState("");
+  const [manufacturers, setManufacturers] = useState([]);
 
   const [commonName, setCommonName] = useState("");
   const [medicalName, setMedicalName] = useState("");
@@ -16,6 +27,14 @@ function Drug() {
     setMedicalName("");
     setFormula("");
     setGeneric("");
+  }
+
+  async function searchManufacturer() {
+    return axios
+      .get(`http://localhost:5000/api/v1/drugs/manufacturer/${drugName}`)
+      .then((response) => {
+        setDrugName(response.data);
+      });
   }
 
   async function loadDrugs() {
@@ -36,6 +55,27 @@ function Drug() {
     alert("Data inserted");
     clearState();
     return loadDrugs();
+  }
+
+  function manufacturerTable() {
+    return (
+      <div>
+        <Table striped bordered hover variant="dark">
+          <thead>
+            <tr>
+              <th>Manufacturers</th>
+            </tr>
+          </thead>
+          <tbody>
+            {manufacturers.map((manufacturer) => (
+              <tr>
+                <td>{manufacturer["name"]}</td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      </div>
+    );
   }
 
   function listAllDrugs() {
@@ -74,6 +114,36 @@ function Drug() {
     <div className={styles.filter}>
       <Container className={styles.containerBlock}>
         <Row className="m-5">{listAllDrugs()}</Row>
+        <Row className="m-5">
+          <Col>
+            <Card className={styles.card}>
+              <Card.Body>
+                <Card.Title>Get side effects</Card.Title>
+                <Form>
+                  <Form.Group className="mb-3" controlId="form">
+                    <Form.Label column="sm">Drug</Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="Drug"
+                      value={drugName}
+                      onChange={(e) => setDrugName(e.target.value)}
+                    />
+                  </Form.Group>
+                  <Button
+                    variant="dark"
+                    type="button"
+                    size="sm"
+                    className={styles.button}
+                    onClick={searchManufacturer}
+                  >
+                    Search
+                  </Button>
+                </Form>
+              </Card.Body>
+            </Card>
+          </Col>
+          <Col>{manufacturers.length > 0 && manufacturerTable()}</Col>
+        </Row>
         <Row className="m-5">
           <h2>Add new drug</h2>
           <Form onSubmit={submitNewDrug} className="mt-3">
